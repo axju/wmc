@@ -1,0 +1,62 @@
+{
+    "intro": {
+        "cmds": [
+            {
+                "input": "cat intro.txt",
+                "output": [
+                    {
+                        "text": "\n\n\n\n"
+                    },
+                    {
+                        "title": "Watch me coding"
+                    },
+                    {
+                        "text": "\n\n\n"
+                    }
+                ]
+            },
+            {
+                "input": "python load_info.py",
+                "output": [
+                    {
+                        "progressbar": null
+                    },
+                    {
+                        "text": "I code some crazy stuff...\n"
+                    }
+                ]
+            },
+            {
+                "input": "vcl video.mp4",
+                "output": [
+                    {
+                        "text": "[*] Load video"
+                    },
+                    {
+                        "progressbar": null
+                    }
+                ]
+            }
+        ],
+        "font": "univers",
+        "prompt": ">>> ",
+        "record": {
+            "linux": "ffmpeg -y -f x11grab -framerate 30 -video_size 1920x1080 -i :0.0+0,0 -r 30 -vcodec libx264 -preset ultrafast {filename}.mp4",
+            "win": "ffmpeg -y -f gdigrab -framerate 30 -draw_mouse 0 -show_region 1 -video_size 1920x1080 -offset_x -1920 -i desktop -r 30 -vcodec libx264 -preset ultrafast {filename}.mp4"
+        },
+        "wait": 1
+    },
+    "name": "test",
+    "prefix": "video_",
+    "profils": {
+        "default": {
+            "record": "ffmpeg -y -f x11grab -framerate 1 -video_size 1920x1080 -i :0.0+0,0 -vf setpts=N/TB/30 -r 30 -vcodec libx264 -preset ultrafast {filename}.mp4",
+            "size": [
+                0,
+                0,
+                1920,
+                1080
+            ]
+        }
+    }
+}
