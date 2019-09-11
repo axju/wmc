@@ -2,6 +2,12 @@
 Watch me coding
 ===============
 
+Install
+-------
+It is on PyPi::
+
+  pip install wmc
+
 Hot to uses
 -----------
 Create a new project. This is basically a folder with a settings file::
