@@ -46,7 +46,7 @@ Virtual environment linux::
 Setup project::
 
   python -m pip install --upgrade pip wheel setuptools tox flake8
-  pip install -e .
+  python setup.py develop
 
 Run some test::
 

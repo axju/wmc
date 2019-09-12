@@ -7,6 +7,15 @@ from wmc import __version__
 from wmc.assemble import Interface
 
 
+def call(interface, name, **kwargs):
+    func = getattr(interface, name)
+    func(**kwargs)
+    #try:
+    #    func(**kwargs)
+    #except:
+    #    print('Oh no, a error.')
+
+
 def main():
     """print some help"""
     parser = ArgumentParser(
@@ -14,7 +23,7 @@ def main():
         epilog='Copyright 2019 AxJu | WMCv{}'.format(__version__),
     )
     parser.add_argument(
-        'action', choices=('setup', 'info', 'record', 'size', 'link', 'intro'),
+        'action',  nargs='?', choices=('setup', 'info', 'record', 'size', 'link', 'intro', 'clean'),
         help='Select the action'
     )
     parser.add_argument(
@@ -41,21 +50,13 @@ def main():
     interface = Interface(args.path, create=args.action == 'setup')
     if args.action == 'setup':
         print('Create new project')
+        return 1
 
-    if args.action in ['info', 'setup']:
-        interface.info()
-
-    if args.action == 'record':
-        interface.record()
-
-    if args.action == 'size':
-        interface.size()
-
-    if args.action == 'link':
-        interface.link()
-
-    if args.action == 'intro':
-        interface.intro()
+    if not args.action:
+        parser.print_help()
+    else:
+        kwargs = {}
+        call(interface, args.action, **kwargs)
 
 
 if __name__ == '__main__':

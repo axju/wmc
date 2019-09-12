@@ -4,12 +4,13 @@ import sys
 import json
 from datetime import datetime
 from wmc.default import COMMON, LINUX, WIN
+from wmc.utils import BasicKeys
 
 
-class ProjectFiles():
+class ProjectFiles(BasicKeys):
     """docstring for ProjectFiles."""
 
-    KEYS = ['path', 'data', 'videos', 'final', 'intro']
+    KEYS = ['path', 'data', 'videos', 'full', 'intro', 'final']
 
     def __init__(self, path):
         super(ProjectFiles, self).__init__()
@@ -23,7 +24,7 @@ class ProjectFiles():
             return os.path.join(self.path, 'data.json')
         if key == 'videos':
             return list(self.videos())
-        if key in ['final', 'intro']:
+        if key in ['full', 'final', 'intro']:
             return os.path.join(self.path, f'{key}.mp4')
         return None
 
@@ -39,7 +40,7 @@ class ProjectFiles():
                 yield file
 
 
-class ProjectData():
+class ProjectData(BasicKeys):
     """docstring for ProjectData."""
 
     KEYS = ['name', 'record', 'size', 'prefix', 'intro', 'intro-record']
@@ -55,11 +56,6 @@ class ProjectData():
         if key in self.KEYS:
             return self.data.get(key)
         return None
-
-    def __contains__(self, key):
-        if key in self.KEYS:
-            return True
-        return False
 
     def load(self):
         """Load the data from the file"""
@@ -101,8 +97,10 @@ class ProjectData():
         return True
 
 
-class Project():
+class Project(BasicKeys):
     """Manage the data and files for one project folder."""
+
+    KEYS = ['name', 'video', 'records']
 
     def __init__(self, path, profil=None):
         super(Project, self).__init__()
@@ -111,17 +109,14 @@ class Project():
 
     def __getitem__(self, key):
         """ ProjectFiles['info'] """
+        if key == 'name':
+            return self.data['name']
         if key == 'video':
             now = datetime.now().strftime('%Y%m%d%H%M.mp4')
             return os.path.join(self.files['path'], self.data['prefix'] + now)
         if key == 'records':
             return sorted(list(filter(lambda x: x.find(self.data['prefix']) > 0, self.files['videos'])))
         return None
-
-    def __contains__(self, key):
-        if key in ['video', 'records']:
-            return True
-        return False
 
     def create(self):
         """Create the info file"""

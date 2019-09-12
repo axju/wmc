@@ -3,6 +3,17 @@ import sys
 from time import sleep
 
 
+class BasicKeys():
+    """docstring for BasicKeys."""
+
+    KEYS = []
+
+    def __contains__(self, key):
+        if key in self.KEYS:
+            return True
+        return False
+
+
 def resize_window(size, wait=1):
     """Resize the current window"""
     sleep(wait)

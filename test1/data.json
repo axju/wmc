@@ -1,0 +1,92 @@
+{
+    "intro": {
+        "cmds": [
+            {
+                "input": "cat intro.txt",
+                "output": [
+                    {
+                        "text": "\n\n\n\n"
+                    },
+                    {
+                        "title": "Watch me coding"
+                    },
+                    {
+                        "text": "\n\n\n"
+                    }
+                ]
+            },
+            {
+                "input": "python load_info.py",
+                "output": [
+                    {
+                        "progressbar": null
+                    },
+                    {
+                        "text": "I code some crazy stuff...\n"
+                    }
+                ]
+            },
+            {
+                "input": "vcl video.mp4",
+                "output": [
+                    {
+                        "text": "[*] Load video"
+                    },
+                    {
+                        "progressbar": null
+                    }
+                ]
+            }
+        ],
+        "font": "univers",
+        "prompt": ">>> ",
+        "wait": 1
+    },
+    "intro-record": {
+        "input": {
+            "f": "gdigrab",
+            "filename": "desktop",
+            "framerate": 1,
+            "offset_x": -1920,
+            "show_region": 1,
+            "video_size": [
+                1920,
+                1080
+            ]
+        },
+        "output": {
+            "preset": "ultrafast",
+            "r": 30,
+            "vcodec": "libx264"
+        },
+        "setpts": "N/TB/30"
+    },
+    "name": "test1",
+    "prefix": "video_",
+    "profils": {},
+    "record": {
+        "input": {
+            "f": "gdigrab",
+            "filename": "desktop",
+            "framerate": 1,
+            "offset_x": -1920,
+            "show_region": 1,
+            "video_size": [
+                1920,
+                1080
+            ]
+        },
+        "output": {
+            "preset": "ultrafast",
+            "r": 30,
+            "vcodec": "libx264"
+        },
+        "setpts": "N/TB/30"
+    },
+    "size": [
+        -1928,
+        -4,
+        1935,
+        1093
+    ]
+}
