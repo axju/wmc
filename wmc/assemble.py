@@ -2,10 +2,10 @@
 import os
 import logging
 import ffmpeg
-from tempfile import mkdtemp
+from shutil import copy
 from lying.utils import Terminal
 from wmc.project import Project
-from wmc.utils import resize_window
+from wmc.utils import resize_window, Censorship
 
 
 class Interface():
@@ -72,13 +72,27 @@ class Interface():
 
         process.communicate(input=b"q")
 
-    def clean(self):
-        """cleanup all video frames"""
-        #tmpdir = mkdtemp()
-        tmpdir = 'C:/Users/ajura/AppData/Local/Temp/tmp29ngwhnl'
-        print(tmpdir)
-        stream = ffmpeg.input(self.proj.files['full'])
-        stream = ffmpeg.output(stream, tmpdir+'/test%06d.png')
-        ffmpeg.run(stream, overwrite_output=True)
+    def censor(self):
+        """cleanup the full video"""
+        templates = self.proj.data['censor']
+        censorship = Censorship(self.proj.files['full'], templates, self.proj.files['cleaned'])
+        censorship.run()
 
-        PASSWORD
+    def censorvideos(self):
+        """cleanup all records"""
+        templates = self.proj.data['censor']
+        for video in self.proj['records']:
+            cleaned_name = video.replace(self.proj.data['prefix'], 'cleaned_')
+            censorship = Censorship(video, templates, cleaned_name, threshold=0.45, multi=False)
+            censorship.run()
+
+    def censortemplates(self):
+        """create the templates"""
+        templates = self.proj.data['censor']
+        censorship = Censorship('', templates, '')
+        censorship.setup()
+        censorship.create_templates()
+        for template in censorship.get_files('templates'):
+            dest = os.path.join(self.proj.files['path'], 'template'+os.path.basename(template))
+            copy(template, dest)
+        censorship.cleanup()

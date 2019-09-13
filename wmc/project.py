@@ -10,7 +10,7 @@ from wmc.utils import BasicKeys
 class ProjectFiles(BasicKeys):
     """docstring for ProjectFiles."""
 
-    KEYS = ['path', 'data', 'videos', 'full', 'intro', 'final']
+    KEYS = ['path', 'data', 'videos', 'full', 'intro', 'final', 'cleaned']
 
     def __init__(self, path):
         super(ProjectFiles, self).__init__()
@@ -24,8 +24,8 @@ class ProjectFiles(BasicKeys):
             return os.path.join(self.path, 'data.json')
         if key == 'videos':
             return list(self.videos())
-        if key in ['full', 'final', 'intro']:
-            return os.path.join(self.path, f'{key}.mp4')
+        if key in ['full', 'final', 'intro', 'cleaned']:
+            return os.path.join(self.path, '{key}.mp4'.format(key))
         return None
 
     def check(self):
@@ -43,7 +43,7 @@ class ProjectFiles(BasicKeys):
 class ProjectData(BasicKeys):
     """docstring for ProjectData."""
 
-    KEYS = ['name', 'record', 'size', 'prefix', 'intro', 'intro-record']
+    KEYS = ['name', 'record', 'size', 'prefix', 'intro', 'intro-record', 'censor']
 
     def __init__(self, filename, profil=None):
         super(ProjectData, self).__init__()

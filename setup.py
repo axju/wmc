@@ -25,7 +25,7 @@ base_dir = os.path.dirname(__file__)
 with open(os.path.join(base_dir, 'README.rst')) as readme:
     README = readme.read()
 
-requirements = ['lying==0.0.1a1', 'ffmpeg-python']
+requirements = ['lying==0.0.1a1', 'ffmpeg-python', 'opencv-python', 'numpy']
 if sys.platform.startswith('win'):
     requirements.append('pywin32')
 elif sys.platform.startswith('linux'):
