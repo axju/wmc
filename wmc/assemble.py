@@ -2,9 +2,10 @@
 import os
 import logging
 import ffmpeg
+from shutil import copy
 from lying.utils import Terminal
 from wmc.project import Project
-from wmc.utils import resize_window
+from wmc.utils import resize_window, Censorship
 
 
 class Interface():
@@ -34,8 +35,8 @@ class Interface():
         """start the record"""
         filename = self.proj['video']
         setting = self.proj.data['record']
-        stream = ffmpeg.input(**setting["input"]).setpts(setting["setpts"])
-        stream = ffmpeg.output(stream, filename, **setting["output"])
+        stream = ffmpeg.input(**setting['input']).setpts(setting['setpts'])
+        stream = ffmpeg.output(stream, filename, **setting['output'])
         ffmpeg.run(stream, overwrite_output=True)
 
     def size(self):
@@ -47,14 +48,14 @@ class Interface():
         stream = ffmpeg.input(self.proj['records'][0])
         for video in self.proj['records'][1:]:
             stream = stream.concat(ffmpeg.input(video))
-        stream = ffmpeg.output(stream, self.proj.files['final'])
+        stream = ffmpeg.output(stream, self.proj.files['full'])
         ffmpeg.run(stream, overwrite_output=True)
 
     def intro(self):
         """create a nice intro"""
-        setting = self.proj.data["intro-record"]
-        stream = ffmpeg.input(**setting["input"])
-        stream = ffmpeg.output(stream, self.proj.files['intro'], **setting["output"])
+        setting = self.proj.data['intro-record']
+        stream = ffmpeg.input(**setting['input'])
+        stream = ffmpeg.output(stream, self.proj.files['intro'], **setting['output'])
         process = ffmpeg.run_async(
             stream,
             pipe_stdin=True,
@@ -63,10 +64,35 @@ class Interface():
             overwrite_output=True,
         )
 
-        cmds = self.proj.data["intro"]["cmds"]
-        prompt = self.proj.data["intro"].get("prompt", ">> ")
-        wait = self.proj.data["intro"].get("wait", 1)
+        cmds = self.proj.data['intro']['cmds']
+        prompt = self.proj.data['intro'].get("prompt", ">> ")
+        wait = self.proj.data['intro'].get("wait", 1)
         terminal = Terminal(cmds, prompt=prompt, wait=wait)
         terminal.run(auto_exit=True)
 
         process.communicate(input=b"q")
+
+    def censor(self):
+        """cleanup the full video"""
+        templates = self.proj.data['censor']
+        censorship = Censorship(self.proj.files['full'], templates, self.proj.files['cleaned'])
+        censorship.run()
+
+    def censorvideos(self):
+        """cleanup all records"""
+        templates = self.proj.data['censor']
+        for video in self.proj['records']:
+            cleaned_name = video.replace(self.proj.data['prefix'], 'cleaned_')
+            censorship = Censorship(video, templates, cleaned_name, threshold=0.45, multi=False)
+            censorship.run()
+
+    def censortemplates(self):
+        """create the templates"""
+        templates = self.proj.data['censor']
+        censorship = Censorship('', templates, '')
+        censorship.setup()
+        censorship.create_templates()
+        for template in censorship.get_files('templates'):
+            dest = os.path.join(self.proj.files['path'], 'template'+os.path.basename(template))
+            copy(template, dest)
+        censorship.cleanup()

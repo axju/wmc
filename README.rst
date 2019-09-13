@@ -1,6 +1,29 @@
 ===============
 Watch me coding
 ===============
+.. image:: https://img.shields.io/pypi/v/wmc
+   :alt: PyPI
+   :target: https://pypi.org/project/wmc/
+
+.. image:: https://img.shields.io/pypi/pyversions/wmc
+   :alt: Python Version
+   :target: https://pypi.org/project/wmc/
+
+.. image:: https://img.shields.io/pypi/wheel/wmc
+   :alt: Wheel
+   :target: https://pypi.org/project/wmc/
+
+.. image:: https://img.shields.io/pypi/implementation/wmc
+   :alt: Implementation
+   :target: https://pypi.org/project/wmc/
+
+.. image:: https://img.shields.io/pypi/dm/wmc
+   :alt: Downloads
+   :target: https://pypi.org/project/wmc/
+
+.. image:: https://img.shields.io/pypi/l/wmc
+   :alt: License
+   :target: https://pypi.org/project/wmc/
 
 Install
 -------
@@ -46,7 +69,7 @@ Virtual environment linux::
 Setup project::
 
   python -m pip install --upgrade pip wheel setuptools tox flake8
-  pip install -e .
+  python setup.py develop
 
 Run some test::
 

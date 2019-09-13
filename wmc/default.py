@@ -30,7 +30,43 @@ COMMON = {
                 ],
             },
         ],
-    }
+    },
+    "autro": {
+        "cmds": [
+            {
+                "input": "cat thanks.txt",
+                "output": [
+                    {
+                        "text": "\n\n"
+                    },
+                    {
+                        "title": "THANKS"
+                    },
+                    {
+                        "title": "FOR"
+                    },
+                    {
+                        "title": "WATCHING"
+                    },
+                    {
+                        "text": "\n\n"
+                    }
+                ]
+            }
+        ],
+        "font": "univers",
+        "prompt": ">>> ",
+        "wait": 1
+    },
+    'censor': [
+        {
+            'size': [18, 70],
+            'text': 'PASSWORD',
+            'scale': 0.4,
+            'font': 0,
+            'pos': (0, 12),
+        },
+    ]
 }
 
 LINUX = {
@@ -39,6 +75,7 @@ LINUX = {
         "input": {
             "filename": ":0.0+0,0",
             "f": "x11grab",
+            "framerate": 1,
             "video_size": (1920, 1080),
         },
         "output": {
