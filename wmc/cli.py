@@ -1,65 +1,96 @@
 """The cli"""
 import os
+import json
 import logging
-from argparse import ArgumentParser
+import argparse
+import pkg_resources
 from wmc import __version__
-from wmc.assemble import Interface
 
 
-def main():
-    """print some help"""
-    parser = ArgumentParser(
+class Interface(object):
+    """docstring for Inter."""
+
+    def __init__(self):
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.setup = {}
+        self.command = {}
+        for enp in pkg_resources.iter_entry_points(group='wmc.register_setup'):
+            self.setup[enp.name] = enp
+
+        for enp in pkg_resources.iter_entry_points(group='wmc.register_command'):
+            self.command[enp.name] = enp
+
+    def _setup(self, path, file):
+        settings = {}
+        settings['path'] = path
+        for name, setup in self.setup.items():
+            func = setup.load()
+            if not func(settings):
+                raise Exception('Setup ERROR')
+
+        if not os.path.isdir(path):
+            os.mkdir(path)
+            self.logger.info('Create "%s"', path)
+
+        filename = os.path.join(path, file)
+        with open(filename, 'w') as file:
+            json.dump(settings, file, indent=4, sort_keys=True)
+            self.logger.info('Save settings "%s"', filename)
+
+    def commands(self):
+        return ['setup'] + list(self.command.keys())
+
+    def run(self, cmd, path, file, args):
+        self.logger.info('Start cmd="%s", path="%s", file="%s", args="%s"', cmd, path, file, args)
+        if cmd == 'setup':
+            return self._setup(path, file)
+
+        elif cmd in self.command:
+            with open(os.path.join(path, file)) as file:
+                settings = json.load(file)
+
+            func = self.command[cmd].load()
+            return func(settings, args)
+
+
+def dispatch(argv):
+    interface = Interface()
+
+    parser = argparse.ArgumentParser(
+        prog='wmc',
         description='Watch me coding, a toolbox',
         epilog='Copyright 2019 AxJu | WMCv{}'.format(__version__),
     )
     parser.add_argument(
-        'action',  nargs='?', help='Select the action',
-        choices=(
-            'setup', 'info', 'record', 'size', 'link', 'intro',
-            'censor', 'censorvideos', 'censortemplates'
-        ),
+        '-V','--version',
+        action='version',
+        version='%(prog)s version {}'.format(__version__),
+    )
+    parser.add_argument(
+        '-v', '--verbose', action='store_true',
+        help='Enable debug infos'
+    )
+    parser.add_argument(
+        '-s', '--settings', default='data.json',
+        help='The settings file'
+    )
+    parser.add_argument(
+        'command',
+        choices=interface.commands(),
     )
     parser.add_argument(
         'path', nargs='?', default=os.getcwd(),
         help='Path to the project'
     )
     parser.add_argument(
-        '-v', '--verbose', action='store_true',
-        help='enable debug infos'
+        'args',
+        help=argparse.SUPPRESS,
+        nargs=argparse.REMAINDER,
     )
-    parser.add_argument(
-        '-V', '--version', action='store_true',
-        help='Print program version and exit'
-    )
-
-    args = parser.parse_args()
-    if args.version:
-        print(__version__)
-        return 1
+    args = parser.parse_args(argv)
 
     if args.verbose:
         log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         logging.basicConfig(level=logging.DEBUG, format=log_format)
 
-    try:
-        interface = Interface(args.path, create=args.action == 'setup')
-        if args.action == 'setup':
-            print('Create new project')
-            return 1
-
-        if not args.action:
-            parser.print_help()
-        else:
-            kwargs = {}
-            getattr(interface, args.action)(**kwargs)
-
-    except Exception as e:
-        if args.verbose:
-            raise e
-        else:
-            print('Oh no, a error.')
-    return 1
-
-
-if __name__ == '__main__':
-    main()
+    return interface.run(args.command, args.path, args.settings, args.args)
