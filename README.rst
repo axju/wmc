@@ -68,7 +68,7 @@ Virtual environment linux::
 
 Setup project::
 
-  python -m pip install --upgrade pip wheel setuptools tox flake8
+  python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage
   python setup.py develop
 
 Run some test::
@@ -76,12 +76,9 @@ Run some test::
   tox
   python setup.py test
   python setup.py flake8
-  python setup.py isort
   python setup.py check
 
-ToDo
-----
+Test coverage::
 
-1. expand test
-2. create intro render
-3. catch exception on cli function call
+  coverage run --source wmc setup.py test
+  coverage report -m

@@ -1,9 +1,11 @@
+"""some basic setups and commands"""
 import os
-import ffmpeg
 from datetime import datetime
+import ffmpeg
 
 
 def setup(settings):
+    """Create the basic settings"""
     settings['record'] = {
         "input": {
             "filename": ":0.0+0,0",
@@ -22,10 +24,12 @@ def setup(settings):
 
 
 def info(settings, args):
+    """Print som infos"""
     print(settings)
 
 
 def record(settings, args):
+    """Start the record"""
     now = datetime.now().strftime('%Y%m%d%H%M.mp4')
     filename = os.path.join(settings['path'], 'video_' + now)
     stream = ffmpeg.input(**settings['record']['input']).setpts(settings['record']['setpts'])
@@ -36,9 +40,9 @@ def record(settings, args):
 def link(settings, args):
     """concat all videos to one"""
     records = []
-    for record in os.listdir(settings['path']):
-        if record.startswith('video_'):
-            records.append(os.path.join(settings['path'], record))
+    for rec in os.listdir(settings['path']):
+        if rec.startswith('video_'):
+            records.append(os.path.join(settings['path'], rec))
     stream = ffmpeg.input(records[0])
     for video in records[1:]:
         stream = stream.concat(ffmpeg.input(video))

@@ -1,6 +1,7 @@
+"""Only the entry point for the python command"""
 import sys
-from wmc.cli import  dispatch
+from wmc.utils import Dispatch
 
 
 if __name__ == '__main__':
-    dispatch(sys.argv[1:])
+    Dispatch().main(sys.argv[1:])
