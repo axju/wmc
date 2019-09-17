@@ -9,24 +9,27 @@ from wmc import __version__
 
 
 class BasicCommand():
-    """docstring for BasicCommand."""
+    """The BasicCommand"""
 
     __version__=__version__
 
-    def __init__(self, path='.', file='data.jons'):
+    def __init__(self, path='.', file='data.json'):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.path, self.file = os.path.abspath(path), file
         self.filename = os.path.abspath(os.path.join(path, file))
-        self.settings = {'name': os.path.basename(path), 'path': self.filename}
+        self.settings = {'name': os.path.basename(self.path), 'path': self.path}
         if os.path.isfile(self.filename):
             self.load()
 
+        self.args = None
         self.setup()
         self.parser = self.setup_parser()
 
     def __getitem__(self, key):
-        """ ProjectData['info'] """
         return self.settings.get(key)
+
+    def __contains__(self, key):
+        return key in self.settings
 
     def setup_parser(self):
         parser = argparse.ArgumentParser(
@@ -70,10 +73,10 @@ class BasicCommand():
             doc = self.__class__.__doc__ or ''
         return doc
 
-    def parse_args(self, args):
+    def parse_args(self, argv):
         """Setup parser or load some values"""
         self.logger.info('parse_args')
-        self.args = self.parser.parse_args(args)
+        self.args = self.parser.parse_args(argv)
 
     def setup(self):
         """Setup parser or load some values"""

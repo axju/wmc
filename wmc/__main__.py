@@ -1,6 +1,6 @@
 """Only the entry point for the python command"""
-from wmc.dispatch import main
+from wmc.cli import main
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     main()

@@ -1,5 +1,6 @@
 """The basic commands"""
 import os
+import sys
 import ffmpeg
 from datetime import datetime
 from types import SimpleNamespace
@@ -42,10 +43,24 @@ class Info(BasicCommand):
 class Record(BasicCommand):
     """Start the record"""
 
-    def create(self):
-        """Create the basic settings"""
-        super(Record, self).create()
-        self.settings['record'] = {
+    DATA = {
+        'win': {
+            "input": {
+                "filename": "desktop",
+                "f": "gdigrab",
+                "framerate": 1,
+                "video_size": (1920, 1080),
+                "offset_x": -1920,
+                "show_region": 1,
+            },
+            "output": {
+                "vcodec": "libx264",
+                "preset": "ultrafast",
+                "r": 30,
+            },
+            "setpts": "N/TB/30",
+        },
+        'linux': {
             "input": {
                 "filename": ":0.0+0,0",
                 "f": "x11grab",
@@ -59,6 +74,17 @@ class Record(BasicCommand):
             },
             "setpts": "N/TB/30",
         }
+    }
+
+    def create(self):
+        """Create the basic settings"""
+        super(Record, self).create()
+        platform = 'None'
+        if sys.platform.startswith('win'):
+            platform = 'win'
+        elif sys.platform.startswith('linux'):
+            platform = 'linux'
+        self.settings['record'] = self.DATA.get(platform, {})
 
     def main(self):
         """Start the record"""
@@ -81,6 +107,9 @@ class Link(BasicCommand):
         for rec in os.listdir(self.settings['path']):
             if rec.startswith('video_'):
                 records.append(os.path.join(self.settings['path'], rec))
+        if not records:
+            return
+        records.sort()
         stream = ffmpeg.input(records[0])
         for video in records[1:]:
             stream = stream.concat(ffmpeg.input(video))

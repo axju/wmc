@@ -12,11 +12,11 @@ setup(
         'setuptools_scm',
     ],
     extras_require={
-        'full':  [
-            #'wmc-resize',
-            'lying',
-            'blurring',
-        ],
+        #'full':  [
+        #    'wmc-resize',
+        #    'lying',
+        #    'blurring',
+        #],
     },
     entry_points={
         'wmc.register_cls': [
@@ -26,7 +26,7 @@ setup(
             'link=wmc.commands:Link',
         ],
         'console_scripts': [
-            'wmc=wmc.dispatch:main',
+            'wmc=wmc.cli:main',
         ],
     },
 )
