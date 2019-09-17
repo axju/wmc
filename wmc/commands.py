@@ -1,9 +1,9 @@
 """The basic commands"""
 import os
 import sys
-import ffmpeg
 from datetime import datetime
-from types import SimpleNamespace
+
+import ffmpeg
 from wmc.utils import BasicCommand
 from wmc.dispatch import load_entry_points
 
@@ -18,14 +18,14 @@ class Setup(BasicCommand):
         if os.path.isfile(self.filename):
             raise Exception('There are already a file')
 
-    def main(self):
+    def main(self, **kwargs):
         super(Setup, self).main()
         self.logger.info('Start Setup path="%s"', self.path)
         if not os.path.isdir(self.path):
             os.makedirs(self.path)
 
         entry_points = load_entry_points()
-        for name, cls in entry_points.items():
+        for cls in entry_points.values():
             cmd = cls(self.path, self.file)
             cmd.create()
             cmd.save()
@@ -34,7 +34,7 @@ class Setup(BasicCommand):
 class Info(BasicCommand):
     """Print some infos"""
 
-    def main(self):
+    def main(self, **kwargs):
         """Print som infos"""
         super(Info, self).main()
         print(self.settings)
@@ -76,7 +76,7 @@ class Record(BasicCommand):
         }
     }
 
-    def create(self):
+    def create(self, **kwargs):
         """Create the basic settings"""
         super(Record, self).create()
         platform = 'None'
@@ -86,7 +86,7 @@ class Record(BasicCommand):
             platform = 'linux'
         self.settings['record'] = self.DATA.get(platform, {})
 
-    def main(self):
+    def main(self, **kwargs):
         """Start the record"""
         super(Record, self).create()
         now = datetime.now().strftime('%Y%m%d%H%M.mp4')
@@ -100,7 +100,7 @@ class Record(BasicCommand):
 class Link(BasicCommand):
     """Concat allvideos to one"""
 
-    def main(self):
+    def main(self, **kwargs):
         """concat all videos to one"""
         super(Link, self).create()
         records = []
