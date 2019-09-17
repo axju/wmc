@@ -2,96 +2,87 @@
 import os
 import json
 import logging
-import argparse
 import pkg_resources
+import argparse
+from types import SimpleNamespace
 from wmc import __version__
 
 
-class Dispatch():
-    """docstring for Dispatch."""
+class BasicCommand():
+    """docstring for BasicCommand."""
 
-    def __init__(self):
+    __version__=__version__
+
+    def __init__(self, path='.', file='data.jons'):
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.setup = {}
-        self.command = {}
-        for enp in pkg_resources.iter_entry_points(group='wmc.register_setup'):
-            self.setup[enp.name] = enp
+        self.path, self.file = os.path.abspath(path), file
+        self.filename = os.path.abspath(os.path.join(path, file))
+        self.settings = {'name': os.path.basename(path), 'path': self.filename}
+        if os.path.isfile(self.filename):
+            self.load()
 
-        for enp in pkg_resources.iter_entry_points(group='wmc.register_command'):
-            self.command[enp.name] = enp
+        self.setup()
+        self.parser = self.setup_parser()
 
-    def _setup(self, path, file):
-        settings = {}
-        settings['path'] = path
-        for _, setup in self.setup.items():
-            func = setup.load()
-            if not func(settings):
-                raise Exception('Setup ERROR')
+    def __getitem__(self, key):
+        """ ProjectData['info'] """
+        return self.settings.get(key)
 
-        if not os.path.isdir(path):
-            os.mkdir(path)
-            self.logger.info('Create "%s"', path)
-
-        filename = os.path.join(path, file)
-        with open(filename, 'w') as tfile:
-            json.dump(settings, tfile, indent=4, sort_keys=True)
-            self.logger.info('Save settings "%s"', filename)
-
-    def commands(self):
-        """Return all commands"""
-        return ['setup'] + list(self.command.keys())
-
-    def run(self, cmd, path, file, args):
-        """Call the command"""
-        self.logger.info('Start cmd="%s", path="%s", file="%s", args="%s"', cmd, path, file, args)
-        if cmd == 'setup':
-            return self._setup(path, file)
-
-        if cmd in self.command:
-            with open(os.path.join(path, file)) as tfile:
-                settings = json.load(tfile)
-
-            func = self.command[cmd].load()
-            return func(settings, args)
-        return 0
-
-    def main(self, argv):
-        """Create parser und run"""
+    def setup_parser(self):
         parser = argparse.ArgumentParser(
-            prog='wmc',
+            prog='wmc {}'.format(self.__class__.__name__),
             description='Watch me coding, a toolbox',
             epilog='Copyright 2019 AxJu | WMCv{}'.format(__version__),
         )
         parser.add_argument(
             '-V', '--version',
             action='version',
-            version='%(prog)s version {}'.format(__version__),
+            version='%(prog)s v{}'.format(self.__version__),
         )
-        parser.add_argument(
-            '-v', '--verbose', action='store_true',
-            help='Enable debug infos'
-        )
-        parser.add_argument(
-            '-s', '--settings', default='data.json',
-            help='The settings file'
-        )
-        parser.add_argument(
-            'command',
-            choices=self.commands(),
-        )
-        parser.add_argument(
-            'path', nargs='?', default=os.getcwd(),
-            help='Path to the project'
-        )
-        parser.add_argument(
-            'args',
-            help=argparse.SUPPRESS,
-            nargs=argparse.REMAINDER,
-        )
-        args = parser.parse_args(argv)
+        return parser
 
-        if args.verbose:
-            log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            logging.basicConfig(level=logging.DEBUG, format=log_format)
+    def check(self):
+        """Check the project"""
+        if not os.path.isfile(self.filename):
+            raise Exception('No wmc-project')
 
-        return self.run(args.command, args.path, args.settings, args.args)
+    def load(self):
+        """Load the data from the file"""
+        with open(self.filename) as file:
+            self.settings = json.load(file)
+
+    def save(self):
+        """Save the data to the file"""
+        self.logger.info('Save settings (%s)',self.filename)
+        with open(self.filename, 'w') as file:
+            json.dump(self.settings, file, indent=4, sort_keys=True)
+
+    def run(self, args):
+        self.check()
+        self.parse_args(args)
+        return self.main()
+
+    @property
+    def help(self):
+        """Return __help__ ot __doc__"""
+        doc = getattr(self, '__help__', None)
+        if not doc:
+            doc = self.__class__.__doc__ or ''
+        return doc
+
+    def parse_args(self, args):
+        """Setup parser or load some values"""
+        self.logger.info('parse_args')
+        self.args = self.parser.parse_args(args)
+
+    def setup(self):
+        """Setup parser or load some values"""
+        self.logger.info('Setup command')
+
+    def create(self, **kwargs):
+        """Create the data file"""
+        self.logger.info('Create settings')
+
+    def main(self, **kwargs):
+        """Run the command"""
+        self.logger.info('Run command')

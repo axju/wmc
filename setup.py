@@ -7,24 +7,26 @@ setup(
     use_scm_version=True,
     install_requires=[
         'ffmpeg-python',
-        'pywin32 ; platform_system=="Windows"',
-        'Xlib ; platform_system=="Linux"'
     ],
     setup_requires=[
         'setuptools_scm',
     ],
-    entry_points={
-        'wmc.register_setup': [
-            'basic=wmc.basic:setup',
+    extras_require={
+        'full':  [
+            #'wmc-resize',
+            'lying',
+            'blurring',
         ],
-        'wmc.register_command': [
-            'info=wmc.basic:info',
-            'record=wmc.basic:record',
-            'link=wmc.basic:link',
+    },
+    entry_points={
+        'wmc.register_cls': [
+            'setup=wmc.commands:Setup',
+            'info=wmc.commands:Info',
+            'record=wmc.commands:Record',
+            'link=wmc.commands:Link',
         ],
         'console_scripts': [
-            'wmc=wmc.cli:main',
+            'wmc=wmc.dispatch:main',
         ],
-
     },
 )
