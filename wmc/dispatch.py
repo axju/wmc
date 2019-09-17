@@ -1,11 +1,5 @@
 """Load all entry poins"""
-import os
-import sys
-import json
-import logging
-import argparse
 from pkg_resources import iter_entry_points
-from wmc import __version__
 from wmc.utils import BasicCommand
 
 

@@ -10,13 +10,14 @@ from wmc.dispatch import load_entry_points
 def help_commands():
     """Print the command help."""
     commands = load_entry_points()
-    for name, cls in commands.items():
+    for cls in commands.values():
         cmd = cls()
         text = '{:>8} v{:.5} - {}'.format(cmd.__class__.__name__, cmd.__version__, cmd.help)
         print(text)
 
 
 def create_parse(commands):
+    """Create the main parser"""
     parser = argparse.ArgumentParser(
         prog='wmc',
         description='Watch me coding, a toolbox',
@@ -40,7 +41,7 @@ def create_parse(commands):
         help='Some command infos.'
     )
     parser.add_argument(
-        'command',  nargs='?', choices=commands,
+        'command', nargs='?', choices=commands,
         help='Select one command.'
     )
     parser.add_argument(
@@ -72,13 +73,12 @@ def main(argv=sys.argv[1:]):
         cmd = commands[args.command](args.path, args.settings)
         try:
             return cmd.run(args.args)
-        except Exception as e:
+        except Exception as exc:
             if args.verbose:
                 raise
-            else:
-                print('Oh no, a error :(')
-                print('Error:', e)
-                print('Run with --verbose for more information.')
-                return 0
+            print('Oh no, a error :(')
+            print('Error:', exc)
+            print('Run with --verbose for more information.')
+            return 0
 
     return parser.print_help()
