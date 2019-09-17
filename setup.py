@@ -12,11 +12,11 @@ setup(
         'setuptools_scm',
     ],
     extras_require={
-        #'full':  [
+        # 'full':  [
         #    'wmc-resize',
         #    'lying',
         #    'blurring',
-        #],
+        # ],
     },
     entry_points={
         'wmc.register_cls': [

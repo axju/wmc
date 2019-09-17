@@ -2,16 +2,14 @@
 import os
 import json
 import logging
-import pkg_resources
 import argparse
-from types import SimpleNamespace
 from wmc import __version__
 
 
 class BasicCommand():
     """The BasicCommand"""
 
-    __version__=__version__
+    __version__ = __version__
 
     def __init__(self, path='.', file='data.json'):
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -32,6 +30,7 @@ class BasicCommand():
         return key in self.settings
 
     def setup_parser(self):
+        """Create basic parser"""
         parser = argparse.ArgumentParser(
             prog='wmc {}'.format(self.__class__.__name__),
             description='Watch me coding, a toolbox',
@@ -56,11 +55,12 @@ class BasicCommand():
 
     def save(self):
         """Save the data to the file"""
-        self.logger.info('Save settings (%s)',self.filename)
+        self.logger.info('Save settings (%s)', self.filename)
         with open(self.filename, 'w') as file:
             json.dump(self.settings, file, indent=4, sort_keys=True)
 
     def run(self, args):
+        """execute the command"""
         self.check()
         self.parse_args(args)
         return self.main()
