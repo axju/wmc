@@ -71,6 +71,19 @@ Use the help for more::
 
   Copyright 2019 AxJu | WMCv0.3.2
 
+Every sub command could have some different options. But you can look into there
+help, too::
+
+  >>> wmc info dummy -h
+  usage: wmc info [-h] [-V]
+
+  Watch me coding, a toolbox
+
+  optional arguments:
+    -h, --help     show this help message and exit
+    -V, --version  show program's version number and exit
+
+  Copyright 2019 AxJu | WMCv0.3.2
 
 How does it work
 ----------------
