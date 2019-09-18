@@ -2,42 +2,10 @@
 import os
 import sys
 from datetime import datetime
+from time import sleep
 
 import ffmpeg
 from wmc.utils import BasicCommand
-from wmc.dispatch import load_entry_points
-
-
-class Setup(BasicCommand):
-    """Setup the project"""
-
-    __help__ = 'Some help'
-
-    def check(self):
-        """Check the project"""
-        if os.path.isfile(self.filename):
-            raise Exception('There are already a file')
-
-    def main(self, **kwargs):
-        super(Setup, self).main()
-        self.logger.info('Start Setup path="%s"', self.path)
-        if not os.path.isdir(self.path):
-            os.makedirs(self.path)
-
-        entry_points = load_entry_points()
-        for cls in entry_points.values():
-            cmd = cls(self.path, self.file)
-            cmd.create()
-            cmd.save()
-
-
-class Info(BasicCommand):
-    """Print some infos"""
-
-    def main(self, **kwargs):
-        """Print som infos"""
-        super(Info, self).main()
-        print(self.settings)
 
 
 class Record(BasicCommand):
@@ -76,6 +44,11 @@ class Record(BasicCommand):
         }
     }
 
+    def setup_parser(self):
+        super(Record, self).setup_parser()
+        self.parser.add_argument('-t', '--time', type=int, help='set a fix time to run')
+        self.parser.add_argument('-s', '--show', action='store_false', help='show ffmpeg output')
+
     def create(self, **kwargs):
         """Create the basic settings"""
         super(Record, self).create()
@@ -94,24 +67,23 @@ class Record(BasicCommand):
         settings = self.settings['record']
         stream = ffmpeg.input(**settings['input']).setpts(settings['setpts'])
         stream = ffmpeg.output(stream, filename, **settings['output'])
-        ffmpeg.run(stream, overwrite_output=True)
+        process = ffmpeg.run_async(
+            stream,
+            pipe_stdin=True,
+            pipe_stdout=True,
+            pipe_stderr=self.args.show,
+            overwrite_output=True,
+        )
+        try:
+            if self.args.time:
+                self.logger.info('record the screen for %i sec', self.args.time)
+                for _ in range(self.args.time):
+                    sleep(1)
+            else:
+                input('press enter to finish ')
+        except KeyboardInterrupt:
+            self.logger.info('breack with KeyboardInterrupt')
 
-
-class Link(BasicCommand):
-    """Concat allvideos to one"""
-
-    def main(self, **kwargs):
-        """concat all videos to one"""
-        super(Link, self).create()
-        records = []
-        for rec in os.listdir(self.settings['path']):
-            if rec.startswith('video_'):
-                records.append(os.path.join(self.settings['path'], rec))
-        if not records:
-            return
-        records.sort()
-        stream = ffmpeg.input(records[0])
-        for video in records[1:]:
-            stream = stream.concat(ffmpeg.input(video))
-        stream = ffmpeg.output(stream, os.path.join(self.settings['path'], 'full.mp4'))
-        ffmpeg.run(stream, overwrite_output=True)
+        finally:
+            self.logger.info('save file')
+            process.communicate(input=b"q")

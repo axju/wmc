@@ -1,8 +1,8 @@
 """Load all entry poins"""
 import os
 import sys
-import logging
-import argparse
+from logging import basicConfig
+from argparse import ArgumentParser, SUPPRESS, REMAINDER
 from wmc import __version__
 from wmc.dispatch import load_entry_points
 
@@ -12,59 +12,55 @@ def help_commands():
     commands = load_entry_points()
     for cls in commands.values():
         cmd = cls()
-        text = '{:>8} v{:.5} - {}'.format(cmd.__class__.__name__, cmd.__version__, cmd.help)
+        text = '{:>14} v{:.5} - {}'.format(cmd.__class__.__name__, cmd.__version__, cmd.help)
         print(text)
 
 
 def create_parse(commands):
     """Create the main parser"""
-    parser = argparse.ArgumentParser(
+    parser = ArgumentParser(
         prog='wmc',
         description='Watch me coding, a toolbox',
         epilog='Copyright 2019 AxJu | WMCv{}'.format(__version__),
     )
     parser.add_argument(
-        '-V', '--version',
-        action='version',
+        '-V', '--version', action='version',
         version='%(prog)s v{}'.format(__version__),
     )
     parser.add_argument(
-        '-v', '--verbose', action='store_true',
-        help='Enable debug infos.'
+        '-v', '--verbose', action='count', default=0,
+        help='verbosity (-v, -vv, etc)'
     )
     parser.add_argument(
         '-s', '--settings', default='data.json',
-        help='The settings file.'
+        help='the settings file'
     )
     parser.add_argument(
         '-H', '--help-commands', action='store_true',
-        help='Some command infos.'
+        help='some command infos'
     )
     parser.add_argument(
         'command', nargs='?', choices=commands,
-        help='Select one command.'
+        help='select one command'
     )
     parser.add_argument(
         'path', nargs='?', default=os.getcwd(),
-        help='Path to the project.'
+        help='path to the project'
     )
-    parser.add_argument(
-        'args',
-        help=argparse.SUPPRESS,
-        nargs=argparse.REMAINDER,
-    )
+    parser.add_argument('args', help=SUPPRESS, nargs=REMAINDER)
     return parser
 
 
-def main(argv=sys.argv[1:]):
+def main(argv=None):
     """Create parser und run the dispatch"""
     commands = load_entry_points()
     parser = create_parse(commands.keys())
-    args = parser.parse_args(argv)
+    args = parser.parse_args(argv or sys.argv[1:])
 
     if args.verbose:
+        level = args.verbose * 10 if args.verbose <= 5 else 50
         log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        logging.basicConfig(level=logging.DEBUG, format=log_format)
+        basicConfig(level=level, format=log_format)
 
     if args.help_commands:
         return help_commands()

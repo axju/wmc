@@ -6,14 +6,14 @@ from wmc.utils import BasicCommand
 class TestBasicCommand(unittest.TestCase):
 
     def test_init(self):
-        cmd = BasicCommand(path='/temp', file='foo.json')
-        self.assertEqual('/temp', cmd.path)
+        cmd = BasicCommand(path='temp', file='foo.json')
+        self.assertEqual(os.path.abspath('temp'), cmd.path)
         self.assertEqual('foo.json', cmd.file)
-        self.assertEqual(os.path.join('/temp', 'foo.json'), cmd.filename)
+        self.assertEqual(os.path.join(os.path.abspath('temp'), 'foo.json'), cmd.filename)
 
         self.assertIn('name', cmd.settings)
         self.assertIn('path', cmd.settings)
-        self.assertDictEqual(cmd.settings, {'name': 'temp', 'path': '/temp'})
+        self.assertDictEqual(cmd.settings, {'name': 'temp', 'path': os.path.abspath('temp')})
 
     def test_init_defaults(self):
         cmd = BasicCommand()

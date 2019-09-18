@@ -21,7 +21,7 @@ class BasicCommand():
 
         self.args = None
         self.setup()
-        self.parser = self.setup_parser()
+        self.setup_parser()
 
     def __getitem__(self, key):
         return self.settings.get(key)
@@ -31,17 +31,16 @@ class BasicCommand():
 
     def setup_parser(self):
         """Create basic parser"""
-        parser = argparse.ArgumentParser(
+        self.parser = argparse.ArgumentParser(
             prog='wmc {}'.format(self.__class__.__name__),
             description='Watch me coding, a toolbox',
             epilog='Copyright 2019 AxJu | WMCv{}'.format(__version__),
         )
-        parser.add_argument(
+        self.parser.add_argument(
             '-V', '--version',
             action='version',
             version='%(prog)s v{}'.format(self.__version__),
         )
-        return parser
 
     def check(self):
         """Check the project"""
