@@ -100,6 +100,57 @@ It is simple as usual in python. I put some examples in the example folder, a
 class and an function example. Look into the folder, if you want to create
 your own command. I will explain how you can use this.
 
+1. Clone the repo or download the files.::
+
+     git clone https://github.com/axju/wmc.git
+
+2. Install wmc.
+   You should always use a virtual environment, but that's not my business. If
+   you would install wmc from source::
+
+     python setup.py install
+
+   or from PyPi::
+
+    pip install wmc
+
+3. Take a look to the default commands::
+
+    >>> wmc -H
+        info v0.3.2 - Print some infos
+        link v0.3.2 - Concat all videos to one
+      record v0.3.2 - Start the record
+       setup v0.3.2 - Some help
+
+4. Now install the Plugins::
+
+     python examples/plugin_func.py install
+     python examples/plugin_cls.py install
+
+5. Look again to the commands::
+
+    >>> wmc -H
+           info v0.3.2 - Print some infos
+           link v0.3.2 - Concat allvideos to one
+         record v0.3.2 - Start the record
+          setup v0.3.2 - Some help
+     plugin-cls v0.1.0 - A Plugin with a the basic class
+    plugin-func v0.1.0 - A Plugin with a function
+
+6. Now you can use the command::
+
+    >>> wmc plugin-cls dummy -h
+    usage: wmc plugin-cls [-h] [-V] [--hello]
+
+    Watch me coding, a toolbox
+
+    optional arguments:
+    -h, --help     show this help message and exit
+    -V, --version  show program's version number and exit
+    --hello        say hello
+
+    Copyright 2019 AxJu | WMCv0.3.2
+
 
 Development
 -----------
