@@ -30,23 +30,23 @@ def create_parse(commands):
     )
     parser.add_argument(
         '-v', '--verbose', action='store_true',
-        help='Enable debug infos.'
+        help='enable debug infos'
     )
     parser.add_argument(
         '-s', '--settings', default='data.json',
-        help='The settings file.'
+        help='the settings file'
     )
     parser.add_argument(
         '-H', '--help-commands', action='store_true',
-        help='Some command infos.'
+        help='some command infos'
     )
     parser.add_argument(
         'command', nargs='?', choices=commands,
-        help='Select one command.'
+        help='select one command'
     )
     parser.add_argument(
         'path', nargs='?', default=os.getcwd(),
-        help='Path to the project.'
+        help='path to the project'
     )
     parser.add_argument(
         'args',

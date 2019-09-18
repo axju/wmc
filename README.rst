@@ -37,12 +37,6 @@ It is on PyPi::
 
   pip install wmc
 
-or::
-
-  pip install wmc[full]
-
-to get all features.
-
 Hot to uses
 -----------
 Create a new project. This is basically a folder with a settings file::
@@ -74,6 +68,19 @@ Use the help for more::
     -s SETTINGS, --settings SETTINGS
                           The settings file.
     -H, --help-commands   Some command infos.
+
+  Copyright 2019 AxJu | WMCv0.1.1
+
+Every subcommand could have some deffrent options. But you can check them out::
+
+  >>> wmc info test1 -h
+  usage: wmc info [-h] [-V]
+
+  Watch me coding, a toolbox
+
+  optional arguments:
+    -h, --help     show this help message and exit
+    -V, --version  show program's version number and exit
 
   Copyright 2019 AxJu | WMCv0.1.1
 

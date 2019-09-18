@@ -2,6 +2,7 @@
 import os
 import sys
 from datetime import datetime
+from time import sleep
 
 import ffmpeg
 from wmc.utils import BasicCommand
@@ -76,6 +77,12 @@ class Record(BasicCommand):
         }
     }
 
+    def setup_parser(self):
+        parser = super(Record, self).setup_parser()
+        parser.add_argument('-t', '--time', type=int, help='set a fix time to run')
+        parser.add_argument('-s', '--show', action='store_false', help='show ffmpeg output')
+        return parser
+
     def create(self, **kwargs):
         """Create the basic settings"""
         super(Record, self).create()
@@ -94,11 +101,35 @@ class Record(BasicCommand):
         settings = self.settings['record']
         stream = ffmpeg.input(**settings['input']).setpts(settings['setpts'])
         stream = ffmpeg.output(stream, filename, **settings['output'])
-        ffmpeg.run(stream, overwrite_output=True)
+        process = ffmpeg.run_async(
+            stream,
+            pipe_stdin=True,
+            pipe_stdout=True,
+            pipe_stderr=self.args.show,
+            overwrite_output=True,
+        )
+        try:
+            if self.args.time:
+                self.logger.info('record the screen for %i sec', self.args.time)
+                for _ in range(self.args.time):
+                    sleep(1)
+            else:
+                input('press enter to finish ')
+        except KeyboardInterrupt:
+            self.logger.info('breack with KeyboardInterrupt')
+
+        finally:
+            self.logger.info('save file')
+            process.communicate(input=b"q")
 
 
 class Link(BasicCommand):
     """Concat allvideos to one"""
+
+    def setup_parser(self):
+        parser = super(Link, self).setup_parser()
+        parser.add_argument('-s', '--show', action='store_false', help='show ffmpeg output')
+        return parser
 
     def main(self, **kwargs):
         """concat all videos to one"""
@@ -114,4 +145,4 @@ class Link(BasicCommand):
         for video in records[1:]:
             stream = stream.concat(ffmpeg.input(video))
         stream = ffmpeg.output(stream, os.path.join(self.settings['path'], 'full.mp4'))
-        ffmpeg.run(stream, overwrite_output=True)
+        ffmpeg.run(stream, overwrite_output=True, quiet=self.args.show)
