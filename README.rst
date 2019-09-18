@@ -167,7 +167,7 @@ Virtual environment linux::
 
 Setup project::
 
-  python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage
+  python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage rstcheck
   python setup.py develop
 
 Run some test::
@@ -181,3 +181,13 @@ Test coverage::
 
   coverage run --source wmc setup.py test
   coverage report -m
+
+Publish package::
+
+  git tag -a 1.0.0a1 -m '1.0.0a1'
+  rstcheck README.rst
+  python setup.py --version
+  python setup.py check
+  python setup.py sdist bdist_wheel
+  twine upload dist/*
+  git push origin 1.0.0a1
