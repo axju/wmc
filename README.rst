@@ -85,7 +85,6 @@ help, too::
 
   Copyright 2019 AxJu | WMCv0.3.2
 
-
 How does it work
 ----------------
 The workplace is simple folder with a data file. Every command work with this
@@ -99,7 +98,7 @@ basic class.
 
 It is simple as usual in python. I put some examples in the example folder, a
 class and an function example. Look into the folder, if you want to create
-your own command. I will explain how you can use this.::
+your own command. I will explain how you can use this.
 
 1. Clone the repo or download the files.::
 
