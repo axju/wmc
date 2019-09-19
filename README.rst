@@ -9,22 +9,6 @@ Watch me coding
    :alt: Python Version
    :target: https://pypi.org/project/wmc/
 
-.. image:: https://img.shields.io/pypi/wheel/wmc
-   :alt: Wheel
-   :target: https://pypi.org/project/wmc/
-
-.. image:: https://img.shields.io/pypi/implementation/wmc
-   :alt: Implementation
-   :target: https://pypi.org/project/wmc/
-   
-.. image:: https://requires.io/github/axju/wmc/requirements.svg?branch=master
-   :target: https://requires.io/github/axju/wmc/requirements/?branch=master
-   :alt: Requirements
-
-.. image:: https://img.shields.io/pypi/dm/wmc
-   :alt: Downloads
-   :target: https://pypi.org/project/wmc/
-
 .. image:: https://img.shields.io/pypi/l/wmc
    :alt: License
    :target: https://pypi.org/project/wmc/
@@ -195,3 +179,19 @@ Publish package::
   python setup.py sdist bdist_wheel
   twine upload dist/*
   git push origin 1.0.0a1
+  
+.. image:: https://img.shields.io/pypi/wheel/wmc
+   :alt: Wheel
+   :target: https://pypi.org/project/wmc/
+
+.. image:: https://img.shields.io/pypi/implementation/wmc
+   :alt: Implementation
+   :target: https://pypi.org/project/wmc/
+   
+.. image:: https://requires.io/github/axju/wmc/requirements.svg?branch=master
+   :target: https://requires.io/github/axju/wmc/requirements/?branch=master
+   :alt: Requirements
+
+.. image:: https://img.shields.io/pypi/dm/wmc
+   :alt: Downloads
+   :target: https://pypi.org/project/wmc/
