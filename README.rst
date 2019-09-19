@@ -191,24 +191,29 @@ shields
    :target: https://pypi.org/project/wmc/
    
 .. image:: https://requires.io/github/axju/wmc/requirements.svg?branch=master
-   :target: https://requires.io/github/axju/wmc/requirements/?branch=master
    :alt: Requirements
+   :target: https://requires.io/github/axju/wmc/requirements/?branch=master
 
 .. image:: https://img.shields.io/pypi/dm/wmc
    :alt: Downloads
    :target: https://pypi.org/project/wmc/
-
+   
 .. image:: https://img.shields.io/github/languages/code-size/axju/wmc
    :alt: GitHub code size in bytes
+   :target: https://pypi.org/project/wmc/
    
 .. image:: https://img.shields.io/github/repo-size/axju/wmc
    :alt: GitHub repo size
+   :target: https://pypi.org/project/wmc/
    
 .. image:: https://img.shields.io/github/issues/axju/wmc
    :alt: GitHub issues
+   :target: https://pypi.org/project/wmc/
    
 .. image:: https://img.shields.io/twitter/follow/0xAxJu?style=social
    :alt: Twitter Follow
+   :target: https://pypi.org/project/wmc/
    
 .. image:: https://img.shields.io/github/v/tag/axju/wmc
    :alt: GitHub tag (latest by date)
+   :target: https://pypi.org/project/wmc/
