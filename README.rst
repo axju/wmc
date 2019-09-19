@@ -180,7 +180,7 @@ Virtual environment linux::
 
 Setup project::
 
-  python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage rstcheck
+  python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage rstcheck pygount
   python setup.py develop
 
 Run some test::
@@ -195,6 +195,8 @@ Test coverage::
 
   coverage run --source wmc setup.py test
   coverage report -m
+  pygount --format=cloc-xml --out cloc.xml --suffix=py --verbose wmc
+
 
 Publish package::
 
