@@ -180,6 +180,8 @@ Publish package::
   twine upload dist/*
   git push origin 1.0.0a1
   
+shields
+-------
 .. image:: https://img.shields.io/pypi/wheel/wmc
    :alt: Wheel
    :target: https://pypi.org/project/wmc/
@@ -195,3 +197,18 @@ Publish package::
 .. image:: https://img.shields.io/pypi/dm/wmc
    :alt: Downloads
    :target: https://pypi.org/project/wmc/
+
+.. image:: https://img.shields.io/github/languages/code-size/axju/wmc
+   :alt: GitHub code size in bytes
+   
+.. image:: https://img.shields.io/github/repo-size/axju/wmc
+   :alt: GitHub repo size
+   
+.. image:: https://img.shields.io/github/issues/axju/wmc
+   :alt: GitHub issues
+   
+.. image:: https://img.shields.io/twitter/follow/0xAxJu?style=social
+   :alt: Twitter Follow
+   
+.. image:: https://img.shields.io/github/v/tag/axju/wmc
+   :alt: GitHub tag (latest by date)
