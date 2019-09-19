@@ -16,6 +16,10 @@ Watch me coding
 .. image:: https://img.shields.io/pypi/implementation/wmc
    :alt: Implementation
    :target: https://pypi.org/project/wmc/
+   
+.. image:: https://requires.io/github/axju/wmc/requirements.svg?branch=master
+   :target: https://requires.io/github/axju/wmc/requirements/?branch=master
+   :alt: Requirements
 
 .. image:: https://img.shields.io/pypi/dm/wmc
    :alt: Downloads
