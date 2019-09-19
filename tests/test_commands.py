@@ -8,7 +8,7 @@ class BasicCommandTest(TempdirManager, unittest.TestCase):
     def get_cmd(self, cls, setup=True):
         path = os.path.join(self.mkdtemp(), 'foo')
         if setup:
-            Setup(path=path).run([])
+            Setup(path=path).run(['--silent'])
 
         return cls(path=path)
 
@@ -18,7 +18,7 @@ class TestSetup(BasicCommandTest):
     def test_main(self):
         cmd = self.get_cmd(Setup, False)
         self.assertFalse(os.path.exists(cmd.filename))
-        cmd.run([])
+        cmd.run(['--silent'])
         self.assertTrue(os.path.exists(cmd.filename))
         self.assertRaises(Exception, cmd.check)
 

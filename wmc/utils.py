@@ -60,8 +60,8 @@ class BasicCommand():
 
     def run(self, args):
         """execute the command"""
-        self.check()
         self.parse_args(args)
+        self.check()
         return self.main()
 
     @property

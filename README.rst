@@ -14,10 +14,10 @@ Watch me coding
    :target: https://pypi.org/project/wmc/
 
 Create some screen recording. I would like to share my coding process. This
-small tool should help me. But you can use it for any long time recording.
+small tool should help me. But you can use it for any recording.
 
 It's still under develop, but you can try it. See "How does it work" for more
-information
+information.
 
 Install
 -------
@@ -27,15 +27,42 @@ It is on PyPi::
 
 Hot to uses
 -----------
-Create a new project. This is basically a folder with a settings file::
+The toolbox "wmc" have multiple commands. Checkout all registered commands with
+the "-H" argument::
 
-  wmc setup .
-  wmc setup test
+  >>> wmc -H
+      info v0.3.2 - Print some infos
+      link v0.3.2 - Concat all videos to one
+    record v0.3.2 - Start the record
+     setup v0.3.2 - Some help
 
-You can edit the config file or simple start recording::
+Every command works with the project folder. Before you can start, you have to
+create a new project.::
+
+  wmc setup dummy
+
+If you run this command, you have to answer some question to create your
+personal settings. You can rebuild the settings wit the "-r" argument. Change
+to the new project directory and show some information::
+
+  wmc info
+
+As you can see, you do not need to set the project path, if it is the current
+directory. Every command has its own arguments, so I'll do it quickly. To
+simply start the recording, run::
 
   wmc record
 
+To stop recording, press Enter. This saves the new video in the project folder.
+If you have multiple videos, you can contract them::
+
+  wmc link
+
+That was the basic task, I want to solve with this project. Let me know if you
+like it. The next sections gives you a little bit more information.
+
+Help
+----
 Use the help for more::
 
   >>> wmc --help
@@ -59,8 +86,7 @@ Use the help for more::
 
   Copyright 2019 AxJu | WMCv0.3.2
 
-Every sub command could have some different options. But you can look into there
-help, too::
+Do not forget that every command has its own help::
 
   >>> wmc info dummy -h
   usage: wmc info [-h] [-V]
@@ -85,8 +111,8 @@ your dependency small and clean, you can overwrite single functions from the
 basic class.
 
 It is simple as usual in python. I put some examples in the example folder, a
-class and an function example. Look into the folder, if you want to create
-your own command. I will explain how you can use this.
+class and an function example. You should look into the folder, if you want to
+create your own command. I will explain how you can use this.
 
 1. Clone the repo or download the files.::
 
@@ -139,7 +165,6 @@ your own command. I will explain how you can use this.
 
     Copyright 2019 AxJu | WMCv0.3.2
 
-
 Development
 -----------
 
@@ -164,6 +189,7 @@ Run some test::
   python setup.py test
   python setup.py flake8
   python setup.py check
+  pylint --rcfile=setup.cfg wmc
 
 Test coverage::
 
@@ -179,8 +205,15 @@ Publish package::
   python setup.py sdist bdist_wheel
   twine upload dist/*
   git push origin 1.0.0a1
-  
-shields
+
+ToDo
+----
+1. plug in
+2. tests
+3. code coverage
+4. manage print and input in basic class
+
+Shields
 -------
 .. image:: https://img.shields.io/pypi/wheel/wmc
    :alt: Wheel
@@ -189,7 +222,7 @@ shields
 .. image:: https://img.shields.io/pypi/implementation/wmc
    :alt: Implementation
    :target: https://pypi.org/project/wmc/
-   
+
 .. image:: https://requires.io/github/axju/wmc/requirements.svg?branch=master
    :alt: Requirements
    :target: https://requires.io/github/axju/wmc/requirements/?branch=master
@@ -197,23 +230,23 @@ shields
 .. image:: https://img.shields.io/pypi/dm/wmc
    :alt: Downloads
    :target: https://pypi.org/project/wmc/
-   
+
 .. image:: https://img.shields.io/github/languages/code-size/axju/wmc
    :alt: GitHub code size in bytes
    :target: https://pypi.org/project/wmc/
-   
+
 .. image:: https://img.shields.io/github/repo-size/axju/wmc
    :alt: GitHub repo size
    :target: https://pypi.org/project/wmc/
-   
+
 .. image:: https://img.shields.io/github/issues/axju/wmc
    :alt: GitHub issues
    :target: https://pypi.org/project/wmc/
-   
+
 .. image:: https://img.shields.io/twitter/follow/0xAxJu?style=social
    :alt: Twitter Follow
    :target: https://pypi.org/project/wmc/
-   
+
 .. image:: https://img.shields.io/github/v/tag/axju/wmc
    :alt: GitHub tag (latest by date)
    :target: https://pypi.org/project/wmc/
