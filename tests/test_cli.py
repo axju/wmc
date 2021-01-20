@@ -11,8 +11,9 @@ class TestCli(unittest.TestCase):
         self.assertEqual(args.path, os.getcwd())
         self.assertEqual(args.settings, 'data.json')
 
-    #def test_main(self):
-    #    main(['-H'])
+    def test_main(self):
+        main(['-H'])
+        main(['info'])
 
 
 if __name__ == '__main__':

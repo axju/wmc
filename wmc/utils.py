@@ -34,7 +34,7 @@ class BasicCommand():
         self.parser = argparse.ArgumentParser(
             prog='wmc {}'.format(self.__class__.__name__),
             description='Watch me coding, a toolbox',
-            epilog='Copyright 2019 AxJu | WMCv{}'.format(__version__),
+            epilog='Copyright 2021 AxJu | WMCv{}'.format(__version__),
         )
         self.parser.add_argument(
             '-V', '--version',

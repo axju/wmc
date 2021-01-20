@@ -21,7 +21,7 @@ def create_parse(commands):
     parser = ArgumentParser(
         prog='wmc',
         description='Watch me coding, a toolbox',
-        epilog='Copyright 2019 AxJu | WMCv{}'.format(__version__),
+        epilog='Copyright 2021 AxJu | WMCv{}'.format(__version__),
     )
     parser.add_argument(
         '-V', '--version', action='version',

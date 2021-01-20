@@ -25,12 +25,13 @@ class Record(BasicCommand):
                 "vcodec": "libx264",
                 "preset": "ultrafast",
                 "r": 30,
+                "pix_fmt": "yuv420p",
             },
             "setpts": "N/TB/30",
         },
         'linux': {
             "input": {
-                "filename": ":0.0+0,0",
+                "filename": ":1",
                 "f": "x11grab",
                 "framerate": 1,
                 "video_size": (1920, 1080),
@@ -39,6 +40,7 @@ class Record(BasicCommand):
                 "vcodec": "libx264",
                 "preset": "ultrafast",
                 "r": 30,
+                "pix_fmt": "yuv420p",
             },
             "setpts": "N/TB/30",
         }

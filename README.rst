@@ -69,7 +69,7 @@ Use the help for more::
                           The settings file.
     -H, --help-commands   Some command infos.
 
-  Copyright 2019 AxJu | WMCv0.3.2
+  Copyright 2021 AxJu | WMCv0.3.2
 
 Every sub command could have some different options. But you can look into there
 help, too::
@@ -83,7 +83,7 @@ help, too::
     -h, --help     show this help message and exit
     -V, --version  show program's version number and exit
 
-  Copyright 2019 AxJu | WMCv0.3.2
+  Copyright 2021 AxJu | WMCv0.3.2
 
 How does it work
 ----------------
@@ -149,7 +149,7 @@ your own command. I will explain how you can use this.
     -V, --version  show program's version number and exit
     --hello        say hello
 
-    Copyright 2019 AxJu | WMCv0.3.2
+    Copyright 2021 AxJu | WMCv0.3.2
 
 
 Development
@@ -168,16 +168,28 @@ Virtual environment linux::
 Setup project::
 
   python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage
-  python setup.py develop
+  python -m pip install -e .
 
 Run some test::
 
-  tox
-  python setup.py test
-  python setup.py flake8
-  python setup.py check
+  python -m unittest
+  python -m flake8 wmc
+  python -m pylint wmc
 
 Test coverage::
 
-  coverage run --source wmc setup.py test
+  coverage run --source wmc -m unittest
   coverage report -m
+
+Multiple test with tox::
+
+  tox
+
+Publish the packages::
+
+  git tag -a 0.3.3 -m 'Version 0.3.3'
+  git push origin 0.3.3
+  python setup.py --version
+  python setup.py check
+  python setup.py sdist bdist_wheel
+  twine upload dist/*

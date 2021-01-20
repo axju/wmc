@@ -3,6 +3,7 @@ import unittest
 from .support import TempdirManager
 from wmc.commands import Setup, Info, Record, Link
 
+
 class BasicCommandTest(TempdirManager, unittest.TestCase):
 
     def get_cmd(self, cls, setup=True):
@@ -32,7 +33,7 @@ class TestInfo(BasicCommandTest):
 class TestRecord(BasicCommandTest):
     def test_main(self):
         cmd = self.get_cmd(Record)
-        #cmd.run([])
+        cmd.run(['-t', '1'])
 
 
 class TestLink(BasicCommandTest):
