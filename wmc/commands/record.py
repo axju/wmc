@@ -47,13 +47,13 @@ class Record(BasicCommand):
     }
 
     def setup_parser(self):
-        super(Record, self).setup_parser()
+        super().setup_parser()
         self.parser.add_argument('-t', '--time', type=int, help='set a fix time to run')
         self.parser.add_argument('-s', '--show', action='store_false', help='show ffmpeg output')
 
     def create(self, **kwargs):
         """Create the basic settings"""
-        super(Record, self).create()
+        super().create()
         platform = 'None'
         if sys.platform.startswith('win'):
             platform = 'win'
@@ -63,7 +63,7 @@ class Record(BasicCommand):
 
     def main(self, **kwargs):
         """Start the record"""
-        super(Record, self).create()
+        super().create()
         now = datetime.now().strftime('%Y%m%d%H%M.mp4')
         filename = os.path.join(self.settings['path'], 'video_' + now)
         settings = self.settings['record']

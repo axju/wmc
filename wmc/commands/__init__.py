@@ -20,7 +20,7 @@ class Setup(BasicCommand):
             raise Exception('There are already a file')
 
     def main(self, **kwargs):
-        super(Setup, self).main()
+        super().main()
         self.logger.info('Start Setup path="%s"', self.path)
         if not os.path.isdir(self.path):
             os.makedirs(self.path)
@@ -37,7 +37,7 @@ class Info(BasicCommand):
 
     def main(self, **kwargs):
         """Print som infos"""
-        super(Info, self).main()
+        super().main()
         print(self.settings)
 
 
@@ -45,12 +45,12 @@ class Link(BasicCommand):
     """Concat all videos to one"""
 
     def setup_parser(self):
-        super(Link, self).setup_parser()
+        super().setup_parser()
         self.parser.add_argument('-s', '--show', action='store_false', help='show ffmpeg output')
 
     def main(self, **kwargs):
         """concat all videos to one"""
-        super(Link, self).create()
+        super().create()
         records = []
         for rec in os.listdir(self.settings['path']):
             if rec.startswith('video_'):

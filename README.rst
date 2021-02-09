@@ -167,7 +167,7 @@ Virtual environment linux::
 
 Setup project::
 
-  python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage
+  python -m pip install --upgrade pip wheel setuptools tox flake8 pylama pylint coverage twine
   python -m pip install -e .
 
 Run some test::
